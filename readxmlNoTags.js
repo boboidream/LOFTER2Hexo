@@ -1,8 +1,9 @@
+
 /*
  * Author: boboidream
  * Version: 0.1
  */
- 
+
 var fs = require('fs'),
     xml2js = require('/usr/local/lib/node_modules/xml2js'),
     toMarkdown = require('/usr/local/lib/node_modules/to-markdown'),
@@ -10,19 +11,19 @@ var fs = require('fs'),
 
 fs.readFile('LOFTER.xml', function(e, v) {
 
-    if (!fs.existsSync('LOFTER')) {
-        fs.mkdir('LOFTER');
-    }
+	if (! fs.existsSync('LOFTER')) {
+		fs.mkdir('LOFTER');
+	}
 
     parser.parseString(v, function(err, result) {
         for (var i = 0; i < result.lofterBlogExport.PostItem.length; i++) {
             var article = result.lofterBlogExport.PostItem[i],
-                newDate = new Date(parseInt(article.publishTime)).Format("yyyy-MM-dd hh:mm:ss"),
+            	newDate = new Date(parseInt(article.publishTime)).Format("yyyy-MM-dd hh:mm:ss"),
                 fileName = newDate.substring(0, 10) + '-' + article.title + '.md',
-                allWord = parseArticle(article, newDate);
+            	allWord = parseArticle(article, newDate);
 
             if (fileName.indexOf('/') != null) {
-                var fileName = fileName.replace(/\//, ' ');
+            	var fileName = fileName.replace(/\//, ' ');
             }
 
             createMD(fileName, allWord, i);
@@ -56,14 +57,15 @@ function createMD(fileName, allWord, i) {
 function parseArticle(article, newDate) {
     var article = article,
         newDate = newDate,
-        headline = '---\n' + 'title: ' + article.title + '\n' + 'date: ' + newDate + '\n' + 'categories: 随笔' + '\n' + 'tags: [' + article.tag + ']\n---\n';
+        headline = '---\n' + 'title: ' + article.title + '\n' + 'date: ' + newDate + '\n' + 'categories: 随笔' + '\n' + 'description: ' + article.tag + '\n---\n';
 
     if (article.content != null) {
         var content = toMarkdown(article.content.toString());
     } else if (article.photoLinks != null) {
         var text = article.photoLinks[0],
             json = JSON.parse(text),
-            content = '![]' + '(' + json[0].middle + ')';
+        content = '![]' + '(' + json[0].small + ')';
+        console.log(json);
     } else {
         console.log('parseArticle faild.');
     }
@@ -91,10 +93,10 @@ function parseComment(comment) {
         res += item;
     }
 
-    return '\n---\n' + '>评论区：\n>' + res;
+    return '\n\n---\n' + '>评论区：\n>' + res;
 }
 
-// Date format
+// 时间戳转换
 Date.prototype.Format = function(fmt) { //author: meizz   
     var o = {
         "M+": this.getMonth() + 1, //月份   

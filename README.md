@@ -46,6 +46,11 @@
 
   请将 `readxml.js` 程序中 `/usr/local/lib/node_modules/to-markdown` 改为自己的 `to-markdown` 的安装目录。
 
+3. readxmlNoTags.js 是什么？
+
+ 此程序将 LOFTER 中的 `Tags` 解析为 `description` 内容，以避免由于标签太多造成的不美观。
+
+
 ```
 版本说明:
 2016.02.26 发布
