@@ -64,8 +64,7 @@ function parseArticle(article, newDate) {
     } else if (article.photoLinks != null) {
         var text = article.photoLinks[0],
             json = JSON.parse(text),
-        content = '![]' + '(' + json[0].small + ')';
-        console.log(json);
+        content = '![图片]' + '(' + json[0].small + ')';
     } else {
         console.log('parseArticle faild.');
     }

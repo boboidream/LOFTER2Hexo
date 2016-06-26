@@ -8,50 +8,31 @@
 ## 使用说明
 ### 环境配置
 1. node.js : 如需安装请查看 [Node.js 下载](https://nodejs.org/en/download/)
-2. [xml2js](https://www.npmjs.com/package/xml2js) : 请在终端中输入以下命令完成安装。
+2. 克隆本项目
+  ```
+  git clone git@github.com:boboidream/LOFTER2Hexo.git
+  ```
+### 使用程序
+1. 将 LOFTER 导出的 XML 文件命名为:`LOFTER.xml`，
 
- ```
- sudo npm install xml2js -g
- ```
+2. 替换项目文件夹（LOFTER2Hexo）中 `LOFTER.xml` 测试文件 (备注：可用测试文件跑一次，看是否成功)
 
-3. [to-markdown](https://www.npmjs.com/package/to-markdown) : 请在终端中输入以下命令完成安装。
+3. 打开终端，`cd` 至项目文件夹（LOFTER2Hexo），运行 `node readxml` (备注：如不需要生成标签，运行：`node readxml_no_tags`)
 
- ```
- sudo npm install to-markdown -g
- ```
+### 运行结果
+1. 在 `Terminal` 中会打印日志
 
-### 执行程序
-1. 将 LOFTER 导出的 XML 文件命名为:`LOFTER.xml`
+2. 生成 `LOFTER` 文件夹，包含所有 Markdown 文件
 
-2. 将 readxml.js 与 `LOFTER.xml` 放于同一文件夹
+## 其他说明
+1. `node readxml_no_tags`
+ 此程序将 LOFTER 中的 `Tags` ，解析为Markdown文件里 `description` 内容，以避免生成太多 `Tags` 造成的不美观。
 
-3. 打开终端，`cd` 至当前目录，运行 `node readxml.js`
-
-### 运行成功
-1. 在 `Terminal` 中打印出生成日志
-
-2. 在当前文件夹新建 `LOFTER` 文件夹，并将生成 Markdown 文件放置其中
-
-## 可能出现的问题
-1. `Cannot find module '/usr/local/lib/node_modules/xml2js'`
-
- 请将 `readxml.js` 程序中 `/usr/local/lib/node_modules/xml2js` 改为自己的 `xml2js` 的安装目录。
-
- ```
-    xml2js = require('/usr/local/lib/node_modules/xml2js'),
-    toMarkdown = require('/usr/local/lib/node_modules/to-markdown'),
- ```
-
-2. `Cannot find module '/usr/local/lib/node_modules/to-markdown'`
-
-  请将 `readxml.js` 程序中 `/usr/local/lib/node_modules/to-markdown` 改为自己的 `to-markdown` 的安装目录。
-
-3. readxmlNoTags.js 是什么？
-
- 此程序将 LOFTER 中的 `Tags` 解析为 `description` 内容，以避免由于标签太多造成的不美观。
+2. 有些朋友留言说，导出 Markdown 文件为空的问题，本人未测试出问题。希望有问题的朋友能提供下运行环境和终端日志，以便尽快修复问题，感谢！
 
 
 ```
 版本说明:
+2016.06.26 配置了 package.json文件，并将依赖文件直接放置于项目中，简化使用步骤
 2016.02.26 发布
 ```
