@@ -12,7 +12,9 @@
   ```
   git clone git@github.com:boboidream/LOFTER2Hexo.git
   ```
+
 ### 使用程序
+
 1. 将 LOFTER 导出的 XML 文件命名为:`LOFTER.xml`，
 
 2. 替换项目文件夹（LOFTER2Hexo）中 `LOFTER.xml` 测试文件 (备注：可用测试文件跑一次，看是否成功)
@@ -20,13 +22,16 @@
 3. 打开终端，`cd` 至项目文件夹（LOFTER2Hexo），运行 `node readxml` (备注：如不需要生成标签，运行：`node readxml_no_tags`)
 
 ### 运行结果
+
 1. 在 `Terminal` 中会打印日志
 
 2. 生成 `LOFTER` 文件夹，包含所有 Markdown 文件
 
 ## 其他说明
+
 1. `node readxml_no_tags`
- 此程序将 LOFTER 中的 `Tags` ，解析为Markdown文件里 `description` 内容，以避免生成太多 `Tags` 造成的不美观。
+
+  此程序将 LOFTER 中的 `Tags` ，解析为Markdown文件里 `description` 内容，以避免生成太多 `Tags` 造成的不美观。
 
 2. 有些朋友留言说，导出 Markdown 文件为空的问题，本人未测试出问题。希望有问题的朋友能提供下运行环境和终端日志，以便尽快修复问题，感谢！
 
