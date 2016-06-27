@@ -1,6 +1,6 @@
 /*
  * Author: boboidream
- * Version: 0.2
+ * Version: 0.2.1
  */
 
 var fs = require('fs'),
@@ -63,9 +63,11 @@ function parseArticle(article, newDate) {
     } else if (article.photoLinks != null) {
         var text = article.photoLinks[0],
             json = JSON.parse(text),
-            content = '![图片]' + '(' + json[0].middle + ')';
+        content = '![图片]' + '(' + json[0].small + ')';
+    } else if (article.caption != null) {
+        var content = toMarkdown(article.caption.toString());
     } else {
-        console.log('parseArticle faild.');
+        console.log(article);
     }
 
     if (article.commentList == null) {

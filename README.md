@@ -8,6 +8,7 @@
 ## 使用说明
 ### 环境配置
 1. node.js : 如需安装请查看 [Node.js 下载](https://nodejs.org/en/download/)
+
 2. 克隆本项目
   ```
   git clone git@github.com:boboidream/LOFTER2Hexo.git
@@ -33,11 +34,14 @@
 
   此程序将 LOFTER 中的 `Tags` ，解析为Markdown文件里 `description` 内容，以避免生成太多 `Tags` 造成的不美观。
 
-2. 有些朋友留言说，导出 Markdown 文件为空的问题，本人未测试出问题。希望有问题的朋友能提供下运行环境和终端日志，以便尽快修复问题，感谢！
+2. 【已修复】有些朋友留言说，导出 Markdown 文件为空的问题，本人未测试出问题。希望有问题的朋友能提供下运行环境和终端日志，以便尽快修复问题，感谢！
+
+3. 使用 `node to_jekll` 时，可以在 to_jekll 文件顶部修改 author 名称
 
 
 ```
 版本说明:
+2016.06.28 感谢 「Teng」反馈 bug，修复 音乐文件引起的 Okb 问题，并支持导出 Jekll 所用md格式
 2016.06.26 配置了 package.json文件，并将依赖文件直接放置于项目中，简化使用步骤
 2016.02.26 发布
 ```
