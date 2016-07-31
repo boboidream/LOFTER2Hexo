@@ -1,6 +1,6 @@
 /*
  * Author: boboidream
- * Version: 0.2.1
+ * Version: 0.2.2
  * 此版本导出不包含Tags的 md 文件，解决分类太多问题。
  */
 
@@ -19,7 +19,8 @@ fs.readFile('LOFTER.xml', function(e, v) {
         for (var i = 0; i < result.lofterBlogExport.PostItem.length; i++) {
             var article = result.lofterBlogExport.PostItem[i],
             	newDate = new Date(parseInt(article.publishTime)).Format("yyyy-MM-dd hh:mm:ss"),
-                fileName = newDate.substring(0, 10) + '-' + article.title + '.md',
+              index = i + 1,
+              fileName = newDate.substring(0, 10) + '-' + article.title + '-' + index + '.md',
             	allWord = parseArticle(article, newDate);
 
             if (fileName.indexOf('/') != null) {
