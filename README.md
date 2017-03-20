@@ -12,6 +12,7 @@
 2. 克隆本项目
   ```
   git clone git@github.com:boboidream/LOFTER2Hexo.git
+  npm install
   ```
 
 ### 使用程序
@@ -41,6 +42,7 @@
 
 ```
 版本说明:
+2017.03.20 支持下载图片到本地 `./LOFTER/img` 文件夹，更改生成 md 中图片路径。
 2016.07.31 感谢 「屠夫9441」反馈bug，修复名称相同文件覆盖问题。
 2016.06.28 感谢 「Teng」反馈 bug，修复 音乐文件引起的 Okb 问题，并支持导出 Jekll 所用md格式
 2016.06.26 配置了 package.json文件，并将依赖文件直接放置于项目中，简化使用步骤

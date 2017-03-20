@@ -1,17 +1,19 @@
 {
   "name": "lofter2hexo",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "一个将 LOFTER 导出的 XML 文件转换为适合 Hexo 解析的 Markdown 文件工具。",
   "main": "readxml.js",
   "bin": {
     "readxml": "readxml"
   },
   "scripts": {
-    "test": "./readxml.js"
+    "test": "./readxml.js",
+    "start": "node ./readxml.js"
   },
   "dependencies": {
-    "xml2js": "0.4.16",
-    "to-markdown": "3.0.0"
+    "image-downloader": "^2.0.3",
+    "to-markdown": "3.0.0",
+    "xml2js": "0.4.16"
   },
   "repository": {
     "type": "git",

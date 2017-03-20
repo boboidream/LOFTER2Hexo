@@ -6,7 +6,19 @@
 var fs = require('fs'),
     xml2js = require('./node_modules/xml2js'),
     toMarkdown = require('./node_modules/to-markdown'),
-    parser = new xml2js.Parser();
+    parser = new xml2js.Parser(),
+    image_downloader = require('image-downloader')
+
+function initDir() {
+    if (!fs.existsSync('./LOFTER')) {
+        fs.mkdirSync('./LOFTER', 0755)
+    }
+    if (!fs.existsSync('./LOFTER/img')) {
+        fs.mkdirSync('./LOFTER/img', 0755)
+    }
+}
+
+initDir()
 
 fs.readFile('LOFTER.xml', function(e, v) {
 
@@ -61,10 +73,29 @@ function parseArticle(article, newDate) {
 
     if (article.content != null) {
         var content = toMarkdown(article.content.toString());
+        var imgUrl = content.match(/!\[.*?\]\((.*?)\)/)[1]
+
+        content = content.replace(/!\[(.*?)\]\((.*?)\)/, function(whole, name, url) {
+            console.log(url)
+            return `![${name}](./${url.split('/').pop()})`
+        })
+        
+        image_downloader({
+            url: imgUrl,
+            dest: './LOFTER/img',
+            done: function(err, filename, image) {
+                if (err) {
+                    throw err
+                }
+                console.log('File saved to', filename)
+            }
+        })
     } else if (article.photoLinks != null) {
         var text = article.photoLinks[0],
             json = JSON.parse(text),
-        content = '![图片]' + '(' + json[0].small + ')';
+            content = '![图片]' + '(' + json[0].small + ')';
+        
+        
     } else if (article.caption != null) {
         var content = toMarkdown(article.caption.toString());
     } else {
