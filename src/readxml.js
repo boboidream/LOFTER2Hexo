@@ -5,24 +5,37 @@
  */
 
 var fs = require('fs'),
-    xml2js = require('./node_modules/xml2js'),
-    toMarkdown = require('./node_modules/to-markdown'),
+    path = require('path'),
+    xml2js = require('xml2js'),
+    toMarkdown = require('to-markdown'),
     parser = new xml2js.Parser(),
-    image_downloader = require('image-downloader')
+    image_downloader = require('image-downloader'),
+    argv = require('commander'),
+    file = '',
+    author = ''
+    
+argv.version('0.3.0')
+    .usage('<filename> [options]')
+    .option('-n, --notag', 'Without tags')
+    .option('-j, --jekll', 'jekll type')
+    .option('-a, --author', 'set author in header in jekll type')
+    .parse(process.argv)
 
-var argv = require('yargs').boolean(['notag', 'jekll']),
-    file = process.argv[2],
-    author = argv.author || ''
+file = argv.args[0] || path.resolve(__dirname, '../LOFTER.xml'),
+author = argv.author || ''
 
 
 var lofter2hexo = {
     run: function() {
-        var lib = this.lib,
-            postArray = []
+        var lib = this.lib
 
         lib.initDir()
-        postArray = lib.getPostArray(file)
-        parsePost(postArray, lib.parseArticle, lib.createMD)
+
+        console.log(file)
+        lib.getPostArray(file, function(postArray) {
+            lib.parsePost(postArray , lib.parseArticle, lib.createMD)
+        })
+        
     },
     lib: {
         initDir: function() {
@@ -33,10 +46,12 @@ var lofter2hexo = {
                 fs.mkdirSync('./LOFTER/img', 0755)
             }
         },
-        getPostArray: function(file) {
+        getPostArray: function(file, callback) {
             fs.readFile(file, function(err, data) {
+                if(err) console.log(err)
+
                 parser.parseString(data, function(error, result) {
-                    return result.lofterBlogExport.PostItem
+                    callback(result.lofterBlogExport.PostItem)
                 })
             })
         },
@@ -63,33 +78,31 @@ var lofter2hexo = {
                 })
             })
         },
-        parseArticle: parseArticle
+        parseArticle: parsearticle
     }
 }
 
-// parse one artical
-function parseArtical(artical) {
+// parse one article
+function parsearticle(article) {
     var _parparseHeader,
         _parseContent,
         _parseComment,
         _downloadImg,
         headline = '',
         content = '',
-        comment = '',
+        comments = '',
         newDate = new Date(parseInt(article.publishTime)).Format("yyyy-MM-dd hh:mm:ss")
     
     _parseHeader = function() {
-        var tags = argv.noimg ? '' : artical.tag,
+        var tags = argv.notag ? '' : article.tag,
             newDate = newDate = new Date(parseInt(article.publishTime)).Format("yyyy-MM-dd hh:mm:ss")
             
             if (argv.jekll) {
+                var res = ''
                 if (tags) {
-                    tagArray = tags.split(','),
-                    tags = ''
-
-                for (var i in tags){
-                    res += '    - ' + tags[i] + '\n';
-                }
+                    tags.forEach(function(tag) {
+                        res += '    - ' + tag + '\n';
+                    })
                 }
 
                 headline =  '---\n' +
@@ -98,7 +111,7 @@ function parseArtical(artical) {
                             'date: ' + newDate + '\n' +
                             'author: "' + author + '"\n' +
                             'catalog: 随笔' + '\n' +
-                            'tags: \n' + tags + '\n---\n'
+                            'tags: \n' + res + '\n---\n'
             } else {
 
                 headline = '---\n' + 'title: ' + article.title + '\n' +
@@ -120,13 +133,10 @@ function parseArtical(artical) {
             if (imgArray && imgArray.length) {
                 imgArray.forEach(function(imgURL) {
                     imgURL = imgURL.match(/http.*\.jpg|http.*\.jpeg|http.*\.png/)[0]
-                    console.log(imgURL)
                     content = content.replace(/!\[(.*?)\]\((.*?)\)/, function(whole, imgName, url) {
-                        console.log(url)
+                        _downloadImg(imgURL, imgName)
                         return `![${imgName}](./${url.split('/').pop()})`
                     })
-                
-                    _downloadImg(imgURL, imgName)
                 })
             }
         } else if (article.photoLinks != null) {
@@ -147,18 +157,21 @@ function parseArtical(artical) {
         return content
     }
 
-    _parseComment = function(comment) {
-            var res = '';
-
-            for (var i = 0; i < comment.length; ++i) {
-                var newDate = new Date(parseInt(comment[i].publishTime)).Format('yyyy-MM-dd hh:mm:ss'),
-                    item = '**' + comment[i].publisherNick + '：** ' + comment[i].content + '  *[' + newDate + ']*\n>\n';
-
-                res += item;
-            }
-
-            return '\n---\n' + '>评论区：\n>' + res;
+    _parseComment = function() {
+        if (article.commentList == null) {
+            return comments
         }
+        var comment = article.commentList[0].comment
+
+        for (var i = 0; i < comment.length; ++i) {
+            var newDate = new Date(parseInt(comment[i].publishTime)).Format('yyyy-MM-dd hh:mm:ss'),
+                item = '**' + comment[i].publisherNick + '：** ' + comment[i].content + '  *[' + newDate + ']*\n>\n';
+
+            comments += item;
+        }
+
+        return '\n---\n' + '>评论区：\n>' + comments;
+    }
 
     _downloadImg = function(imgURL, imgName) {
              image_downloader({
@@ -168,7 +181,7 @@ function parseArtical(artical) {
                     if (err) {
                         throw err
                     }
-                    console.log('Image saved to ./LOFTER/img/', filename)
+                    console.log('Image saved to ./LOFTER/img/', imgName)
                 }
             })
         }
