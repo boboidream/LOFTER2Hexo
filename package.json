@@ -4,16 +4,18 @@
   "description": "一个将 LOFTER 导出的 XML 文件转换为适合 Hexo 解析的 Markdown 文件工具。",
   "main": "readxml.js",
   "bin": {
-    "readxml": "readxml"
+    "readxml": "./src/index.js"
   },
   "scripts": {
     "test": "./readxml.js",
-    "start": "node ./readxml.js"
+    "start": "node ./src/index.js"
   },
   "dependencies": {
     "image-downloader": "^2.0.3",
+    "lodash": "^4.17.4",
     "to-markdown": "3.0.0",
-    "xml2js": "0.4.16"
+    "xml2js": "0.4.16",
+    "yargs": "^7.1.0"
   },
   "repository": {
     "type": "git",
