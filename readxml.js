@@ -73,23 +73,32 @@ function parseArticle(article, newDate) {
 
     if (article.content != null) {
         var content = toMarkdown(article.content.toString());
-        var imgUrl = content.match(/!\[.*?\]\((.*?)\)/)[1]
-
-        content = content.replace(/!\[(.*?)\]\((.*?)\)/, function(whole, name, url) {
-            console.log(url)
-            return `![${name}](./${url.split('/').pop()})`
-        })
-        
-        image_downloader({
-            url: imgUrl,
-            dest: './LOFTER/img',
-            done: function(err, filename, image) {
-                if (err) {
-                    throw err
+        var imgArray = content.match(/!\[.*?\]\((.*?)\)/g)
+        console.log(imgArray)
+        if (imgArray && imgArray.length) {
+            imgArray.forEach(function(imgUrl) {
+                imgUrl = imgUrl.match(/http.*\.jpg|http.*\.jpeg|http.*\.png/)[0]
+                console.log(imgUrl)
+                content = content.replace(/!\[(.*?)\]\((.*?)\)/, function(whole, name, url) {
+                console.log(url)
+                return `![${name}](./${url.split('/').pop()})`
+            })
+            
+            image_downloader({
+                url: imgUrl,
+                dest: './LOFTER/img',
+                done: function(err, filename, image) {
+                    if (err) {
+                        throw err
+                    }
+                    console.log('File saved to', filename)
                 }
-                console.log('File saved to', filename)
-            }
-        })
+            })
+            })
+            
+            
+            
+        }
     } else if (article.photoLinks != null) {
         var text = article.photoLinks[0],
             json = JSON.parse(text),
