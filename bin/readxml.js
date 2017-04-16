@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 /*
  * Author: boboidream
  * Version: 0.3.0
@@ -5,33 +7,35 @@
  */
 
 var fs = require('fs'),
-    path = require('path'),
     xml2js = require('xml2js'),
     toMarkdown = require('to-markdown'),
     parser = new xml2js.Parser(),
     image_downloader = require('image-downloader'),
-    argv = require('commander'),
-    file = '',
-    author = ''
-    
+    argv = require('commander')
+
+// init commander
 argv.version('0.3.0')
-    .usage('<filename> [options]')
+    .usage('[options]')
+    .option('-i, --input <lang>', 'lofter xml file')
     .option('-n, --notag', 'Without tags')
-    .option('-j, --jekll', 'jekll type')
-    .option('-a, --author', 'set author in header in jekll type')
+    .option('-j, --jekyll', 'jekyll type')
+    .option('-a, --author <lang>', 'set author in header in jekyll type')
     .parse(process.argv)
 
-file = argv.args[0] || path.resolve(__dirname, '../LOFTER.xml'),
-author = argv.author || ''
+// init path
+var path = require('path'),
+    cwd = process.cwd(),
+    outputFilePath = path.resolve(cwd, 'LOFTER'),
+    outputImgPath = path.resolve(cwd, 'LOFTER/img'),
+    file = argv.input || path.resolve(cwd, 'LOFTER.xml'),
+    author = argv.author || ''
 
-
+// main object
 var lofter2hexo = {
     run: function() {
         var lib = this.lib
 
         lib.initDir()
-
-        console.log(file)
         lib.getPostArray(file, function(postArray) {
             lib.parsePost(postArray , lib.parseArticle, lib.createMD)
         })
@@ -39,16 +43,20 @@ var lofter2hexo = {
     },
     lib: {
         initDir: function() {
-            if (!fs.existsSync('./LOFTER')) {
-                fs.mkdirSync('./LOFTER', 0755)
+            if (!fs.existsSync(outputFilePath)) {
+                fs.mkdirSync(outputFilePath, 0755)
             }
-            if (!fs.existsSync('./LOFTER/img')) {
-                fs.mkdirSync('./LOFTER/img', 0755)
+            if (!fs.existsSync(outputImgPath)) {
+                fs.mkdirSync(outputImgPath, 0755)
             }
         },
         getPostArray: function(file, callback) {
             fs.readFile(file, function(err, data) {
-                if(err) console.log(err)
+                
+                if(err) {
+                    console.error(`读取文件 ${file} 出错：`, err)
+                    return
+                }
 
                 parser.parseString(data, function(error, result) {
                     callback(result.lofterBlogExport.PostItem)
@@ -69,10 +77,10 @@ var lofter2hexo = {
             })
         },
         createMD: function(fileName, allWord, i) {
-            fs.open('LOFTER/' + fileName, 'w', function(err) {
+            fs.open(path.resolve(outputFilePath, fileName), 'w', function(err) {
                 if (err) throw err;
                     
-                fs.writeFile('LOFTER/' + fileName, allWord, function(err) {
+                fs.writeFile(path.resolve(outputFilePath, fileName), allWord, function(err) {
                     if (err) throw err;
                     console.log(i + '. Create ' + fileName + ' successfully!');
                 })
@@ -81,6 +89,7 @@ var lofter2hexo = {
         parseArticle: parsearticle
     }
 }
+
 
 // parse one article
 function parsearticle(article) {
@@ -97,7 +106,7 @@ function parsearticle(article) {
         var tags = argv.notag ? '' : article.tag,
             newDate = newDate = new Date(parseInt(article.publishTime)).Format("yyyy-MM-dd hh:mm:ss")
             
-            if (argv.jekll) {
+            if (argv.jekyll) {
                 var res = ''
                 if (tags) {
                     tags.forEach(function(tag) {
@@ -117,7 +126,7 @@ function parsearticle(article) {
                 headline = '---\n' + 'title: ' + article.title + '\n' +
                         'date: ' + newDate + '\n' +
                         'categories: 随笔' + '\n' + 
-                        'tags: [' + tags + ']\n---\n'
+                        'tags: [' + tags + ']\n\n---\n'
             }
 
             return headline
@@ -142,9 +151,15 @@ function parsearticle(article) {
         } else if (article.photoLinks != null) {
 
             var text = article.photoLinks[0],
-                json = JSON.parse(text)
+                imgArray = JSON.parse(text)
+                
+            imgArray.forEach(function(img) {
+                var imgName = img.orign.split('/').pop(),
+                    imgURL = img.orign
 
-            content = '![图片]' + '(' + json[0].small + ')'
+                content += '![图片]' + '(./img/' + imgName + ')\n'
+                _downloadImg(imgURL, imgName)
+            })
 
         } else if (article.caption != null) {
 
@@ -176,12 +191,12 @@ function parsearticle(article) {
     _downloadImg = function(imgURL, imgName) {
              image_downloader({
                 url: imgURL,
-                dest: './LOFTER/img',
+                dest: outputImgPath,
                 done: function(err, imgName, image) {
                     if (err) {
                         throw err
                     }
-                    console.log('Image saved to ./LOFTER/img/', imgName)
+                    console.log('Image saved to ', imgName)
                 }
             })
         }
@@ -190,8 +205,8 @@ function parsearticle(article) {
 }
 
 
-// Date format
-Date.prototype.Format = function(fmt) { //author: meizz
+// Date format author: meizz
+Date.prototype.Format = function(fmt) {
     var o = {
         "M+": this.getMonth() + 1, //月份
         "d+": this.getDate(), //日
