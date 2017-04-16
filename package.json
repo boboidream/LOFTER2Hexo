@@ -1,6 +1,6 @@
 {
   "name": "lofter2hexo",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "一个将 LOFTER 导出的 XML 文件转换为适合 Hexo 解析的 Markdown 文件工具。",
   "main": "readxml.js",
   "bin": {

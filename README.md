@@ -1,7 +1,7 @@
 # LOFTER2Hexo
 一个将 LOFTER 导出的 XML 文件转换为适合 Hexo 解析的 Markdown 文件工具。
 
-![效果图](./img/2017-04-16.gif)
+![效果图](http://7xsmek.com1.z0.glb.clouddn.com/2017-04-16.gif)
 
 项目地址: https://github.com/boboidream/LOFTER2Hexo
 
