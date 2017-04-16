@@ -1,7 +1,7 @@
 # LOFTER2Hexo
 一个将 LOFTER 导出的 XML 文件转换为适合 Hexo 解析的 Markdown 文件工具。
 
-![效果图](https://github.com/boboidream/LOFTER2Hexo/blob/master/img/2016-02-26.gif)
+![效果图](https://github.com/boboidream/LOFTER2Hexo/blob/master/img/2017-04-16.gif)
 
 项目地址: https://github.com/boboidream/LOFTER2Hexo
 
@@ -15,6 +15,8 @@
     ```
     sudo npm install lofter2hexo -g
     ```
+
+    > 如果国内速度太慢，可以设置淘宝 npm 源，命令行执行 `npm config set registry 'https://registry.npm.taobao.org'`
 
 ### 使用程序
 
