@@ -17,7 +17,7 @@
     ```
 
     > 如果国内速度太慢，可以设置淘宝 npm 源，命令行执行  
-    > `npm config set registry 'https://registry.npm.taobao.org'`
+    > `npm config set registry https://registry.npm.taobao.org`
 
 ### 使用程序
 
@@ -29,7 +29,7 @@
 
 1. 在 `Terminal` 中会打印日志
 
-2. 生成 `LOFTER` 文件夹，包含所有 Markdown 文件
+2. 生成 `LOFTER` 文件夹，包含所有 Markdown 文件；所有图片下载到 `LOFTER/img` 文件夹下
 
 ### 参数说明
 ```
