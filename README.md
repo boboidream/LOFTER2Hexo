@@ -11,9 +11,10 @@
 1. node.js : 如需安装请查看 [Node.js 下载](https://nodejs.org/en/download/)
 
 2. 安装项目
-  ```
-  sudo npm install lofter2hexo -g
-  ```
+
+    ```
+    sudo npm install lofter2hexo -g
+    ```
 
 ### 使用程序
 
@@ -41,10 +42,14 @@
     -a, --author <lang>  设置 jekyll 格式 Markdown 头部 author
 ```
 
-- 命令举例
+命令举例
 ```bash
-readxml -i ./Github/test.xml -n # 解析路径为 `./Github/test.xml` 文件，生成 Markdown 文件不带 Tags 标签
-readxml -n -j -a boboidream # 解析当前目录下 LOFTER.xml 文件，生成不带 Tags 标签的 Jekyll 格式 Markdown 文件，头部 author: boboidream
+readxml -i ./Github/test.xml -n 
+# 解析路径为 `./Github/test.xml` 文件，生成 Markdown 文件不带 Tags 标签
+
+
+readxml -n -j -a boboidream 
+# 解析当前目录下 LOFTER.xml 文件，生成不带 Tags 标签的 Jekyll 格式 Markdown 文件，头部 author: boboidream
 ```
 
 ## 其他说明

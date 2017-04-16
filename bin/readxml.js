@@ -2,7 +2,7 @@
 
 /*
  * Author: boboidream
- * Version: 0.3.0
+ * Version: 2.0.0
  * Update: 20170415
  */
 
@@ -14,7 +14,7 @@ var fs = require('fs'),
     argv = require('commander')
 
 // init commander
-argv.version('0.3.0')
+argv.version('2.0.0')
     .usage('[options]')
     .option('-i, --input <lang>', 'lofter xml file')
     .option('-n, --notag', 'Without tags')
