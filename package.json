@@ -1,0 +1,28 @@
+{
+  "name": "lofter2hexo",
+  "version": "2.0.3",
+  "description": "一个将 LOFTER 导出的 XML 文件转换为适合 Hexo 解析的 Markdown 文件工具。",
+  "main": "readxml.js",
+  "bin": {
+    "readxml": "bin/readxml.js"
+  },
+  "scripts": {
+    "start": "bin/readxml.js"
+  },
+  "dependencies": {
+    "commander": "^2.9.0",
+    "image-downloader": "^2.0.3",
+    "to-markdown": "3.0.0",
+    "xml2js": "0.4.16"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/boboidream/LOFTER2Hexo.git"
+  },
+  "author": "boboidream <z644381492@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/boboidream/LOFTER2Hexo/issues"
+  },
+  "homepage": "https://zwb.io"
+}
