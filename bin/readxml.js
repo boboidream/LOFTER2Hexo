@@ -26,9 +26,12 @@ argv.version('2.0.3')
 var path = require('path'),
     cwd = process.cwd(),
     outputFilePath = path.resolve(cwd, 'LOFTER'),
-    file = argv.input || path.resolve(cwd, 'LOFTER.xml'),
+    file = argv.input || path.resolve(cwd, 'noname.xml'),
     author = argv.author || ''
 
+if (!fs.existsSync(outputFilePath)) {
+    fs.mkdirSync(outputFilePath, 0755)
+}
 // main object
 var lofter2hexo = {
     run: function() {
@@ -125,7 +128,13 @@ function parsearticle(article) {
         if (article.content) {
             var imgArray = []
 
-            content = toMarkdown(article.content.toString())
+            content = toMarkdown(article.content.toString(), {converters: [{
+                filter: 'br',
+                replacement: function(innerHTML, code) {
+                  return '<br /><br />'
+                }
+              }]
+            })
             imgArray = content.match(/!\[.*?\]\((.*?)\)/g)
 
             if (imgArray && imgArray.length) {
