@@ -154,8 +154,9 @@ function parsearticle(article) {
                 imgArray = JSON.parse(text)
                 
             imgArray.forEach(function(img) {
-                var imgName = img.orign.split('/').pop(),
-                    imgURL = img.orign
+                var imageURL = img.orign.split('?')[0]
+                var imgName  = imageURL.split('/').pop(),
+                    imgURL   = imageURL
 
                 content += '![图片]' + '(./img/' + imgName + ')\n'
                 _downloadImg(imgURL, imgName)
