@@ -19,6 +19,11 @@
     "type": "git",
     "url": "git+https://github.com/boboidream/LOFTER2Hexo.git"
   },
+  "keywords": [
+    "hexo",
+    "LOFTER",
+    "md"
+  ],
   "author": "boboidream <z644381492@gmail.com>",
   "license": "MIT",
   "bugs": {
